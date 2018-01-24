@@ -4,7 +4,6 @@ WORKDIR /var/www/html
 RUN cp -r /usr/src/piwik/* /var/www/html/
 COPY php.ini /usr/local/etc/php/php.ini
 COPY config.ini.php /var/www/html/config/config.ini.php
-COPY docker-entrypoint.sh /entrypoint.sh
 
 RUN chown -R www-data:www-data /var/www/html /var/log/apache2 /var/run/apache2 /var/lock/apache2
 
