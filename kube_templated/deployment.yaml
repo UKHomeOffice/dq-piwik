@@ -11,14 +11,14 @@ spec:
     spec:
       containers:
         - name: piwik
-          image: quay.io/ukhomeofficedigital/piwik:latest
+          image: quay.io/ukhomeofficedigital/dq-piwik:{{.DRONE_COMMIT_SHA}}
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
           ports:
           - name: http
             containerPort: 80
             protocol: TCP
-          - name: https
-            containerPort: 443
           resources:
             limits:
               cpu: 500m

@@ -42,6 +42,7 @@ pipeline:
       - |
           cd kube_templated
           kd --file secret.yaml \
+            --file network-policy.yaml \
             --file deployment.yaml \
             --file service.yaml \
             --file ingress.yaml
