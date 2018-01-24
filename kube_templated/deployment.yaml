@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: piwik
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: piwik
+    spec:
+      containers:
+        - name: piwik
+          image: quay.io/ukhomeofficedigital/piwik:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          - name: https
+            containerPort: 443
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          env:
+            - name: PIWIK_MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: piwik-secrets
+                  key: database_username
+            - name: PIWIK_MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: piwik-secrets
+                  key: database_password
+            - name: PIWIK_MYSQL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: piwik-secrets
+                  key: database_host
+            - name: PIWIK_MYSQL_DBNAME
+              valueFrom:
+                secretKeyRef:
+                  name: piwik-secrets
+                  key: database_name
+            - name: PIWIK_APP_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: piwik-secrets
+                  key: salt
+            - name: PIWIK_APP_HOST
+              value: {{ .PIWIK_APP_HOST }}
