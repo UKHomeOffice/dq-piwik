@@ -1,4 +1,20 @@
 pipeline:
+
+  build:
+    image: ukhomeoffice/drone-docker
+    repo: quay.io/ukhomeofficedigital/dq-piwik
+    secrets: [ docker_username, docker_password ]
+    context: app
+    dockerfile: app/Dockerfile
+    registry: quay.io
+    force_tag: true
+    tags:
+      - ${DRONE_COMMIT_SHA}
+      - ${DRONE_REPO_BRANCH}
+    when:
+      event: push
+
+
   deploy:
     image: quay.io/ukhomeofficedigital/kd
     environment:
