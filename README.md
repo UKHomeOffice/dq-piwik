@@ -13,11 +13,11 @@
 | KUBE_NAMESPACE | `dq-dev` |
 | KUBE_SERVER | `https://kube-dev.dsp.notprod.****` |
 | KUBE_TOKEN | `***` |
-| PIWIK_DBNAME | `base64 of DBNAME` |
-| PIWIK_DBHOST | `base64 of DBHOST` |
-| PIWIK_DBPASSWORD | `base64 of DBPASSWORD` |
-| PIWIK_DBUSERNAME | `base64 of DBUSERNAME` |
-| PIWIK_SALT | `base64 of SALT` |
+| PIWIK_DBNAME | `database name` |
+| PIWIK_DBHOST | `host name(url)` |
+| PIWIK_DBPASSWORD | `database password` |
+| PIWIK_DBUSERNAME | `database username` |
+| PIWIK_SALT | `salt for password hashing` |
 | PIWIK_APP_HOST | `piwik-test.notprod.****` |
 
 ##### Command to add drone secret
