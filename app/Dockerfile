@@ -1,5 +1,5 @@
 FROM busybox
-COPY --from=library/piwik:apache / /
+COPY --from=library/piwik:apache / .
 WORKDIR /var/www/html
 RUN cp -r /usr/src/piwik/* /var/www/html/
 COPY php.ini /usr/local/etc/php/php.ini
