@@ -1,4 +1,4 @@
-FROM scratch
+FROM busybox
 COPY --from=library/piwik:apache / /
 WORKDIR /var/www/html
 RUN cp -r /usr/src/piwik/* /var/www/html/
