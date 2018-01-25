@@ -1,6 +1,25 @@
-FROM node:alpine as foo
-FROM alpine
-COPY --from=foo /usr /
+FROM piwik:apache as piwik
+FROM scratch
+COPY --from=piwik /bin /bin
+COPY --from=piwik /boot /boot
+COPY --from=piwik /etc /etc
+COPY --from=piwik /home /home
+COPY --from=piwik /lib /lib
+COPY --from=piwik /lib64 /lib64
+COPY --from=piwik /media /media
+COPY --from=piwik /mnt /mnt
+COPY --from=piwik /opt /opt
+COPY --from=piwik /proc /proc
+COPY --from=piwik /root /root
+COPY --from=piwik /sbin /sbin
+COPY --from=piwik /srv /srv
+COPY --from=piwik /sys /sys
+COPY --from=piwik /tmp /tmp
+COPY --from=piwik /usr /usr
+COPY --from=piwik /var /var
+#bin  boot  dev	entrypoint.sh  etc  home  lib  lib64  media  mnt  opt  proc  root  run	sbin  srv  sys	tmp  usr  var
+
+
 #WORKDIR /var/www/html
 #RUN cp -r /usr/src/piwik/* /var/www/html/
 #COPY php.ini /usr/local/etc/php/php.ini
