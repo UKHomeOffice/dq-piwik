@@ -1,6 +1,6 @@
-FROM busybox as foo
-FROM scratch
-COPY --from=foo bin   dev   etc   home  proc  root  sys   tmp   usr   var /
+FROM node:alpine as foo
+FROM alpine
+COPY --from=foo /usr /
 #WORKDIR /var/www/html
 #RUN cp -r /usr/src/piwik/* /var/www/html/
 #COPY php.ini /usr/local/etc/php/php.ini
