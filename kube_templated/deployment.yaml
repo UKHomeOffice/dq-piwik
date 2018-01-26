@@ -39,6 +39,11 @@ spec:
                 secretKeyRef:
                   name: piwik-rds-access
                   key: endpoint
+            - name: PIWIK_MYSQL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: piwik-rds-access
+                  key: port
             - name: PIWIK_MYSQL_DBNAME
               valueFrom:
                 secretKeyRef:
