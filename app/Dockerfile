@@ -1,5 +1,6 @@
 FROM piwik:apache
 
+RUN apt-get install php5-gd
 RUN sed -i -e 's/:80/:9000/g' /etc/apache2/sites-enabled/000-default.conf
 RUN sed -i -e 's/Listen 80/Listen 9000/g' /etc/apache2/ports.conf
 
