@@ -2,6 +2,7 @@
 ; file automatically generated or modified by Piwik; you can manually override the default values in global.ini.php by redefining them in this file.
 [database]
 host = "{PIWIK_MYSQL_HOST}"
+port = "{PIWIK_MYSQL_PORT}"
 username = "{PIWIK_MYSQL_USER}"
 password = "{PIWIK_MYSQL_PASSWORD}"
 dbname = "{PIWIK_MYSQL_DBNAME}"
