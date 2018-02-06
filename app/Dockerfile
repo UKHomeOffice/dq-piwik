@@ -7,4 +7,4 @@ COPY config.ini.php /usr/src/piwik/config
 COPY entrypoint.sh /entrypoint-wrap.sh
 ENTRYPOINT ["/entrypoint-wrap.sh"]
 USER www-data
-CMD ["apache2-foreground"]s
+CMD ["apache2-foreground"]
