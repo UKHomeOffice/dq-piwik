@@ -24,12 +24,14 @@ pipeline:
       - KUBE_NAMESPACE_DEV
       - KUBE_TOKEN_DEV
       - PIWIK_SALT_DEV
+      - PIWIK_DBNAME
       - PIWIK_APP_HOST
     commands:
       - export KUBE_SERVER=$${KUBE_SERVER_DEV}
       - export KUBE_NAMESPACE=$${KUBE_NAMESPACE_DEV}
       - export KUBE_TOKEN=$${KUBE_TOKEN_DEV}
       - export PIWIK_SALT=$(echo -n $${PIWIK_SALT_DEV} | base64)
+      - export PIWIK_DBNAME=$(echo -n $${PIWIK_DBNAME} | base64)
       - export PIWIK_APP_HOST=$${PIWIK_APP_HOST}
       - |
           cd kube_templated

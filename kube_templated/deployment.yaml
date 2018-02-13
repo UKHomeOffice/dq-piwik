@@ -47,7 +47,7 @@ spec:
             - name: PIWIK_MYSQL_DBNAME
               valueFrom:
                 secretKeyRef:
-                  name: piwik-rds-access
+                  name: piwik-secrets
                   key: database_name
             - name: PIWIK_APP_SALT
               valueFrom:
