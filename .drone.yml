@@ -32,7 +32,7 @@ pipeline:
       - export KUBE_TOKEN=$${KUBE_TOKEN_DEV}
       - export PIWIK_SALT=$(echo -n $${PIWIK_SALT_DEV} | base64)
       - export PIWIK_DBNAME=$(echo -n $${PIWIK_DBNAME} | base64)
-      - export PIWIK_DB_PREFIX=$(echo -n $${PIWIK_DB_PREFIX} | base64)
+      - export PIWIK_MYSQL_DB_PREFIX=$${PIWIK_DB_PREFIX}
       - export PIWIK_APP_HOST=$${PIWIK_APP_HOST}
       - |
           cd kube_templated
