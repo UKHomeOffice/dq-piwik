@@ -33,6 +33,7 @@ pipeline:
       - export PIWIK_SALT=$(echo -n $${PIWIK_SALT_DEV} | base64)
       - export PIWIK_DBNAME=$(echo -n $${PIWIK_DBNAME} | base64)
       - export PIWIK_APP_HOST=$${PIWIK_APP_HOST}
+      - export PIWIK_MYSQL_DB_PREFIX=$${PIWIK_MYSQL_DB_PREFIX}
       - |
           cd kube_templated
           kd --file secret.yaml \

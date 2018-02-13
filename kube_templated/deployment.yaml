@@ -49,6 +49,11 @@ spec:
                 secretKeyRef:
                   name: piwik-secrets
                   key: database_name
+            - name: PIWIK_MYSQL_DB_PREFIX
+              valueFrom:
+                secretKeyRef:
+                  name: piwik-secrets
+                  key: database_prefix
             - name: PIWIK_APP_SALT
               valueFrom:
                 secretKeyRef:

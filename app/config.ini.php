@@ -6,7 +6,7 @@ port = "{PIWIK_MYSQL_PORT}"
 username = "{PIWIK_MYSQL_USER}"
 password = "{PIWIK_MYSQL_PASSWORD}"
 dbname = "{PIWIK_MYSQL_DBNAME}"
-tables_prefix = "piwik_"
+tables_prefix = "{PIWIK_MYSQL_DB_PREFIX}"
 
 [General]
 proxy_client_headers[] = "HTTP_X_FORWARDED_FOR"
