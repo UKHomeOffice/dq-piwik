@@ -27,22 +27,22 @@ spec:
             - name: PIWIK_MYSQL_USER
               valueFrom:
                 secretKeyRef:
-                  name: piwik-rds-access
+                  name: dq-notprod-piwik-rds
                   key: username
             - name: PIWIK_MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: piwik-rds-access
+                  name: dq-notprod-piwik-rds
                   key: password
             - name: PIWIK_MYSQL_HOST
               valueFrom:
                 secretKeyRef:
-                  name: piwik-rds-access
+                  name: dq-notprod-piwik-rds
                   key: endpoint
             - name: PIWIK_MYSQL_PORT
               valueFrom:
                 secretKeyRef:
-                  name: piwik-rds-access
+                  name: dq-notprod-piwik-rds
                   key: port
             - name: PIWIK_MYSQL_DBNAME
               valueFrom:
