@@ -1,4 +1,4 @@
-FROM piwik:apache
+FROM matomo:apache
 LABEL maintainer="hemantkumar.goswami@homeoffice.gsi.gov.uk"
 
 ENV USERMAP_UID 33
