@@ -1,6 +1,9 @@
 # DACC-DQ/Piwik
 >
 **Orchestrates deployment of PIWIK to ACP platforms**
+> This project uses Matomo (formerly known as piwik) for collecting user journey and other vital stats.
+> Even though this project relates to and fetches information from GAIT, it is not considered as one of
+> its core services.
 
 [![build status](https://gitlab.digital.homeoffice.gov.uk/dacc-dq/piwik/badges/master/build.svg)](https://gitlab.digital.homeoffice.gov.uk/dacc-dq/piwik/commits/master)
 [![coverage report](https://gitlab.digital.homeoffice.gov.uk/dacc-dq/piwik/badges/master/coverage.svg)](https://gitlab.digital.homeoffice.gov.uk/dacc-dq/piwik/commits/master)
