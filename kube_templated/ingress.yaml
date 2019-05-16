@@ -16,7 +16,7 @@ spec:
       paths:
       - backend:
           serviceName: piwik
-          servicePort: https
+          servicePort: 443
         path: /
   tls:
   - hosts:
