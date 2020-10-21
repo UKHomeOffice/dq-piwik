@@ -7,59 +7,60 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      name: pwick
+      name: piwik
   template:
     metadata:
       labels:
         name: piwik
     spec:
       containers:
-        - name: piwik
-          image: quay.io/ukhomeofficedigital/dq-piwik:{{.DRONE_COMMIT_SHA}}
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 33
-          ports:
-          - name: http
-            containerPort: 9000
-            protocol: TCP
-          resources:
-            limits:
-              cpu: 500m
-              memory: 500Mi
-          env:
-            - name: PIWIK_MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: dq-notprod-piwik-rds
-                  key: username
-            - name: PIWIK_MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: dq-notprod-piwik-rds
-                  key: password
-            - name: PIWIK_MYSQL_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: dq-notprod-piwik-rds
-                  key: endpoint
-            - name: PIWIK_MYSQL_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: dq-notprod-piwik-rds
-                  key: port
-            - name: PIWIK_MYSQL_DBNAME
-              valueFrom:
-                secretKeyRef:
-                  name: piwik-secrets
-                  key: database_name
-            - name: PIWIK_MYSQL_DB_PREFIX
-              value: {{ .PIWIK_MYSQL_DB_PREFIX }}
-            - name: PIWIK_APP_SALT
-              valueFrom:
-                secretKeyRef:
-                  name: piwik-secrets
-                  key: salt
-            - name: PIWIK_APP_HOST
-              value: {{ .PIWIK_APP_HOST }}
+      - name: piwik
+        image: quay.io/ukhomeofficedigital/dq-piwik:{{.DRONE_COMMIT_SHA}}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 33
+        ports:
+        - name: http
+          containerPort: 9000
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+        env:
+        - name: PIWIK_MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: dq-notprod-piwik-rds
+              key: username
+        - name: PIWIK_MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dq-notprod-piwik-rds
+              key: password
+        - name: PIWIK_MYSQL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: dq-notprod-piwik-rds
+              key: endpoint
+        - name: PIWIK_MYSQL_PORT
+          valueFrom:
+            secretKeyRef:
+              name: dq-notprod-piwik-rds
+              key: port
+        - name: PIWIK_MYSQL_DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: piwik-secrets
+              key: database_name
+        - name: PIWIK_MYSQL_DB_PREFIX
+          value: {{ .PIWIK_MYSQL_DB_PREFIX }}
+        - name: PIWIK_APP_SALT
+          valueFrom:
+            secretKeyRef:
+              name: piwik-secrets
+              key: salt
+        - name: PIWIK_APP_HOST
+          value: {{ .PIWIK_APP_HOST }}
+
