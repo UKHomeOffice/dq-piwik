@@ -1,47 +1,84 @@
-pipeline:
+---
+kind: pipeline
+name: default
+type: kubernetes
 
-  build:
-    image: ukhomeoffice/drone-docker
-    repo: quay.io/ukhomeofficedigital/dq-piwik
-    secrets: [ docker_username, docker_password ]
-    context: app
-    dockerfile: app/Dockerfile
-    registry: quay.io
-    force_tag: true
-    tags:
-      - ${DRONE_COMMIT_SHA}
-      - ${DRONE_REPO_BRANCH}
-    when:
-      event: push
+platform:
+  os: linux
+  arch: amd64
 
+workspace:
+  path: /go/src/gitlab.digital.homeoffice.gov.uk/${DRONE_REPO}
 
-  deploy:
-    image: quay.io/ukhomeofficedigital/kd
-    environment:
-      - INSECURE_SKIP_TLS_VERIFY=true
-    secrets:
-      - KUBE_SERVER_DEV
-      - KUBE_NAMESPACE_DEV
-      - KUBE_TOKEN_DEV
-      - PIWIK_SALT_DEV
-      - PIWIK_DBNAME
-      - PIWIK_DB_PREFIX
-      - PIWIK_APP_HOST
-    commands:
-      - export KUBE_SERVER=$${KUBE_SERVER_DEV}
-      - export KUBE_NAMESPACE=$${KUBE_NAMESPACE_DEV}
-      - export KUBE_TOKEN=$${KUBE_TOKEN_DEV}
-      - export PIWIK_SALT=$(echo -n $${PIWIK_SALT_DEV} | base64)
-      - export PIWIK_DBNAME=$(echo -n $${PIWIK_DBNAME} | base64)
-      - export PIWIK_MYSQL_DB_PREFIX=$${PIWIK_DB_PREFIX}
-      - export PIWIK_APP_HOST=$${PIWIK_APP_HOST}
-      - |
-          cd kube_templated
-          kd --file secret.yaml \
-            --file network-policy.yaml \
-            --file deployment.yaml \
-            --file service.yaml \
-            --file ingress.yaml
-    when:
-      event: [ push, deployment ]
-      branch: master
+steps:
+- name: build
+  pull: if-not-exists
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+  commands:
+  # wait for docker service to be up before running docker build
+  - n=0; while [ "$n" -lt 60 ] && [ ! docker stats --no-stream ]; do n=$(( n + 1 )); sleep 1; done
+  - docker login --username $${DOCKER_USERNAME} --password $${DOCKER_PASSWORD} quay.io/ukhomeofficedigital
+  - docker build -t dq-piwik:$${DRONE_COMMIT_SHA} . --no-cache
+  environment:
+    DOCKER_PASSWORD:
+      from_secret: DOCKER_PASSWORD
+    DOCKER_USERNAME:
+      from_secret: DOCKER_USERNAME
+
+- name: push_image
+  pull: if-not-exists
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+  commands:
+  - docker login -u=$${DOCKER_USERNAME} -p=$${DOCKER_PASSWORD} quay.io/ukhomeofficedigital
+  - docker tag dq-piwik:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dq-piwik:latest
+  - docker tag dq-piwik:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_COMMIT_SHA}
+  - docker tag dq-piwik:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_REPO_BRANCH}
+  - docker push quay.io/ukhomeofficedigital/dq-piwik:latest
+  - docker push quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_COMMIT_SHA}
+  - docker push quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_REPO_BRANCH}
+  environment:
+    DOCKER_PASSWORD:
+      from_secret: DOCKER_PASSWORD
+    DOCKER_USERNAME:
+      from_secret: DOCKER_USERNAME
+
+- name: deploy
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/kd
+  commands:
+  - export KUBE_SERVER=$${KUBE_SERVER_DEV}
+  - export KUBE_NAMESPACE=$${KUBE_NAMESPACE_DEV}
+  - export KUBE_TOKEN=$${KUBE_TOKEN_DEV}
+  - export PIWIK_SALT=$(echo -n $${PIWIK_SALT_DEV} | base64)
+  - export PIWIK_DBNAME=$(echo -n $${PIWIK_DBNAME} | base64)
+  - export PIWIK_MYSQL_DB_PREFIX=$${PIWIK_DB_PREFIX}
+  - export PIWIK_APP_HOST=$${PIWIK_APP_HOST}
+  - "cd kube_templated\nkd --file secret.yaml --file network-policy.yaml --file deployment.yaml --file service.yaml --file ingress.yaml\n"
+  environment:
+    INSECURE_SKIP_TLS_VERIFY: true
+    KUBE_NAMESPACE_DEV:
+      from_secret: KUBE_NAMESPACE_DEV
+    KUBE_SERVER_DEV:
+      from_secret: KUBE_SERVER_DEV
+    KUBE_TOKEN_DEV:
+      from_secret: KUBE_TOKEN_DEV
+    PIWIK_APP_HOST:
+      from_secret: PIWIK_APP_HOST
+    PIWIK_DBNAME:
+      from_secret: PIWIK_DBNAME
+    PIWIK_DB_PREFIX:
+      from_secret: PIWIK_DB_PREFIX
+    PIWIK_SALT_DEV:
+      from_secret: PIWIK_SALT_DEV
+  when:
+    branch:
+    - master
+    event:
+    - push
+    - deployment
+
+services:
+- name: docker
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+
+...
