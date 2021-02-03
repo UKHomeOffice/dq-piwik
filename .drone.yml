@@ -21,9 +21,9 @@ steps:
   - docker build -t dq-piwik:$${DRONE_COMMIT_SHA} . --no-cache
   environment:
     DOCKER_PASSWORD:
-      from_secret: DOCKER_PASSWORD
+      from_secret: docker_password
     DOCKER_USERNAME:
-      from_secret: DOCKER_USERNAME
+      from_secret: docker_username
 
 - name: push_image
   pull: if-not-exists
@@ -38,9 +38,9 @@ steps:
   - docker push quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_REPO_BRANCH}
   environment:
     DOCKER_PASSWORD:
-      from_secret: DOCKER_PASSWORD
+      from_secret: docker_password
     DOCKER_USERNAME:
-      from_secret: DOCKER_USERNAME
+      from_secret: docker_username
 
 - name: deploy
   pull: if-not-exists
