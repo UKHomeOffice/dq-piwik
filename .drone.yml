@@ -18,7 +18,7 @@ steps:
   # wait for docker service to be up before running docker build
   - n=0; while [ "$n" -lt 60 ] && [ ! docker stats --no-stream ]; do n=$(( n + 1 )); sleep 1; done
   - docker login --username $${DOCKER_USERNAME} --password $${DOCKER_PASSWORD} quay.io/ukhomeofficedigital
-  - docker build -t dq-piwik:$${DRONE_COMMIT_SHA} ./app/Dockerfile --no-cache
+  - docker build -t dq-piwik:$${DRONE_COMMIT_SHA} ./app --no-cache
   environment:
     DOCKER_PASSWORD:
       from_secret: docker_password
