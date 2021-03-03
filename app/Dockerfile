@@ -13,6 +13,10 @@ RUN set -ex; \
 		libldap2-dev \
 		libpng-dev \
 		libzip-dev \
+		libldap-common \
+		libssl1.1 \
+		openssl \
+		libzstd1 \
 	; \
 	\
 	debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
