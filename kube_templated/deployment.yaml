@@ -16,7 +16,7 @@ spec:
       containers:
       - name: piwik
         image: quay.io/ukhomeofficedigital/dq-piwik:{{.DRONE_COMMIT_SHA}}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         securityContext:
           runAsNonRoot: true
           runAsUser: 33
