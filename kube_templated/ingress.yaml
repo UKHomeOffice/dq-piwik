@@ -3,24 +3,24 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: piwik-ingress
-  labels:
-    cert-manager.io/solver: http01
   annotations:
-    cert-manager.io/enabled: "true"
+    ingress.kubernetes.io/secure-backends: "false"
+    ingress.kubernetes.io/backend-protocol: "HTTP"
+    stable.k8s.psg.io/kcm.provider: https
     kubernetes.io/ingress.class: "nginx-external"
-    ingress.kubernetes.io/force-ssl-redirect: "true"
-    ingress.kubernetes.io/backend-protocol: "HTTPS"
+  labels:
+    stable.k8s.psg.io/kcm.class: default
 spec:
-  tls:
-  - hosts:
-    - {{ .PIWIK_APP_HOST }}
-    secretName: piwik-external-tls
   rules:
-  - host: {{ .HOSTNAME}}
-  - "www.{{ .PIWIK_APP_HOST }}"
+  - host: {{ .PIWIK_APP_HOST }}
     http:
       paths:
       - backend:
           serviceName: piwik
           servicePort: https
         path: /
+  tls:
+  - hosts:
+    - {{ .PIWIK_APP_HOST }}
+    - "www.{{ .PIWIK_APP_HOST }}"
+    secretName: piwik-external-tls
