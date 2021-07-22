@@ -24,6 +24,12 @@ steps:
       from_secret: docker_password
     DOCKER_USERNAME:
       from_secret: docker_username
+  when:
+    branch:
+      exclude:
+      - master
+    event:
+    - push
 
 - name: push_image
   pull: if-not-exists
@@ -41,6 +47,24 @@ steps:
       from_secret: docker_password
     DOCKER_USERNAME:
       from_secret: docker_username
+  when:
+    branch:
+      exclude:
+      - master
+    event:
+    - push
+
+- name: trivy_scan_jira-docker
+  pull: if-not-exists
+  image: aquasec/trivy
+  commands:
+  - trivy --ignore-unfixed --exit-code 1 --no-progress quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_COMMIT_SHA}
+  when:
+    branch:
+      exclude:
+      - master
+    event:
+    - push
 
 - name: deploy
   pull: if-not-exists
