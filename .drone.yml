@@ -96,10 +96,10 @@ steps:
       from_secret: PIWIK_SALT_DEV
   when:
     branch:
-      exclude:
-      - master
+    - master
     event:
     - push
+    - deployment
 
 services:
 - name: docker
