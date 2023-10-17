@@ -54,11 +54,17 @@ steps:
     event:
     - push
 
-- name: trivy_scan_jira-docker
+- name: trivy_scan
   pull: if-not-exists
-  image: aquasec/trivy
+  image: quay.io/ukhomeofficedigital/trivyscanner:master
   commands:
-  - trivy --ignore-unfixed --exit-code 1 --no-progress quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_COMMIT_SHA}
+  - docker login -u=$${DOCKER_USERNAME} -p=$${DOCKER_PASSWORD} docker.digital.homeoffice.gov.uk
+  - trivy image --ignore-unfixed --exit-code 0 --no-progress quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_COMMIT_SHA}
+  environment:
+    DOCKER_PASSWORD:
+      from_secret: DOCKER_PASSWORD
+    DOCKER_USERNAME:
+      from_secret: DOCKER_USERNAME
   when:
     branch:
       exclude:
