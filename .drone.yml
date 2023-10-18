@@ -79,6 +79,7 @@ steps:
   - export PIWIK_APP_HOST=$${PIWIK_APP_HOST}
   - "cd kube_templated\nkd --file secret.yaml --file network-policy.yaml --file deployment.yaml --file service.yaml --file ingress.yaml\n"
   environment:
+    ENV: notprod
     INSECURE_SKIP_TLS_VERIFY: true
     KUBE_NAMESPACE_DEV:
       from_secret: KUBE_NAMESPACE_DEV
