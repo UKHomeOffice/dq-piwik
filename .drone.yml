@@ -58,13 +58,7 @@ steps:
   pull: if-not-exists
   image: quay.io/ukhomeofficedigital/trivyscanner:master
   commands:
-  - docker login -u=$${DOCKER_USERNAME} -p=$${DOCKER_PASSWORD} docker.digital.homeoffice.gov.uk
   - trivy image --ignore-unfixed --exit-code 0 --no-progress quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_COMMIT_SHA}
-  environment:
-    DOCKER_PASSWORD:
-      from_secret: DOCKER_PASSWORD
-    DOCKER_USERNAME:
-      from_secret: DOCKER_USERNAME
   when:
     branch:
       exclude:
