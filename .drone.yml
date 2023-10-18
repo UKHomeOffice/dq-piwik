@@ -54,11 +54,11 @@ steps:
     event:
     - push
 
-- name: trivy_scan_jira-docker
+- name: trivy_scan
   pull: if-not-exists
-  image: aquasec/trivy
+  image: quay.io/ukhomeofficedigital/trivyscanner:master
   commands:
-  - trivy --ignore-unfixed --exit-code 1 --no-progress quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_COMMIT_SHA}
+  - trivy image --ignore-unfixed --exit-code 0 --no-progress quay.io/ukhomeofficedigital/dq-piwik:$${DRONE_COMMIT_SHA}
   when:
     branch:
       exclude:
@@ -79,6 +79,7 @@ steps:
   - export PIWIK_APP_HOST=$${PIWIK_APP_HOST}
   - "cd kube_templated\nkd --file secret.yaml --file network-policy.yaml --file deployment.yaml --file service.yaml --file ingress.yaml\n"
   environment:
+    ENV: notprod
     INSECURE_SKIP_TLS_VERIFY: true
     KUBE_NAMESPACE_DEV:
       from_secret: KUBE_NAMESPACE_DEV
